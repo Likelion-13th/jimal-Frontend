@@ -29,6 +29,7 @@
     color: #333;
     letter-spacing: 0.05em;
     font-family: 'KaiseiDecol-Regular';
+    text-decoration: none; 
   }
   
   .menu {

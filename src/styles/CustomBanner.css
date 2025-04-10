@@ -1,0 +1,7 @@
+.slick-dots{
+    bottom: 25px;
+}
+.slick-prev:before,
+.slick-next:before {
+  content: none;
+}

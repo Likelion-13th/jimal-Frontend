@@ -10,7 +10,7 @@ const Header = () => {
   return (
     <header className="header">
       <div className="header-inner">
-        <div className="logo">LIKELION</div>
+        <Link to="/" className="logo">LIKELION</Link>
           <div className="menu">
             <Link to="/new" className={currentPage === "/new" ? "active" : ""}>
               New
