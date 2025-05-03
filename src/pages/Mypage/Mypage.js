@@ -1,10 +1,17 @@
 import React from 'react';
+import "../../styles/Mypage.css";
+import Profile from './Profile';
+import Status from './Status';
+import Address from './Address';
+import History from './History';
 
 const Mypage=()=>{
     return(
-        <div>
-            <h1>얍얍</h1>
-            <p>멋쟁이 사자처럼 13기</p>
+        <div className="page-container">
+            <Profile />
+            <Status />
+            <Address />
+            <History />
         </div>
 
     )
