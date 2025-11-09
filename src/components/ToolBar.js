@@ -1,5 +1,7 @@
 import React from "react";
 import "../styles/ToolBar.css";
+import { useCookies } from "react-cookie";
+import  axios  from "axios";
 
 const MoveToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -9,13 +11,50 @@ const MoveToBottom = () => {
     window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
   };
 
-const ToolBar = () => {
+const handleLoginRedirect = () => {
+  const redirectUrl = 
+    process.env.NODE_ENV === "development"
+      ? "http://localhost:3000"
+      : "https://jimalshop.netlify.app";
+
+  const oauthUrl = 
+    "http://Sajang-dev-env.eba-4qx9gwxi.ap-northeast-2.elasticbeanstalk.com/oauth2/start/kakao" +
+    `?redirect_uri=${encodeURIComponent(redirectUrl)}`;
+
+  window.location.href = oauthUrl;
+};
+
+const ToolBar = ({ isLogin, onLoginChange }) => {
+  const [cookies, , removeCookie] = useCookies(["accessToken"]);
+
+  const handleLogout = () => {
+    axios
+      .delete("/users/logout", {
+        headers: {
+          accept: "*/*",
+          Authorization: `Bearer ${cookies.accessToken}`,
+        },
+      })
+      .then(() => {
+        onLoginChange(false);
+        removeCookie("accessToken", { path: "/" });
+      })
+      .catch((err) => {
+        console.log("LOGOUT API 요청 실패", err);
+      });
+  };
+
+
   return (
     <div className="toolbar-container">
       <img
-        src={`${process.env.PUBLIC_URL}/icon/icon_login.svg`}
+        src={isLogin 
+          ? `${process.env.PUBLIC_URL}/icon/icon_logout.svg` 
+          : `${process.env.PUBLIC_URL}/icon/icon_login.svg`
+        }
         alt="login"
         className="toolbar-icon"
+        onClick={isLogin ? handleLogout : handleLoginRedirect}
       ></img>
       <img
         src={`${process.env.PUBLIC_URL}/icon/icon_recent.svg`}

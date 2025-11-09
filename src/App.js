@@ -1,5 +1,7 @@
 import React from "react";
 import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
+import {CookiesProvider} from "react-cookie";
+import { useState } from "react";
 
 import Footer from "./components/Footer";
 import Home from './pages/Home/Home';
@@ -12,20 +14,24 @@ import ToolBar from "./components/ToolBar";
 
 
 
+
 function App() {
+  const [isLogin, setIsLogin] = useState(false);
   return(
-    <Router>
-      <Header />
-      <ToolBar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/mypage" element={<Mypage />} />
-        <Route path="/new" element={<New />} />
-        <Route path="/diffuser" element={<Diffuser />} />
-        <Route path="/perfume" element={<Perfume />} />
-      </Routes>
-      <Footer />
-    </Router>
+    <CookiesProvider>
+      <Router>
+        <Header />
+        <ToolBar isLogin={isLogin} onLoginChange={setIsLogin} />
+        <Routes>
+          <Route path="/" element={<Home onLoginChange={setIsLogin} />} />
+          <Route path="/mypage" element={<Mypage />} />
+          <Route path="/new" element={<New />} />
+          <Route path="/diffuser" element={<Diffuser />} />
+          <Route path="/perfume" element={<Perfume />} />
+        </Routes>
+        <Footer />
+      </Router>
+    </CookiesProvider>
   );
 }
 
