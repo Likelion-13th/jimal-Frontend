@@ -69,7 +69,7 @@ const Mypage=()=>{
 	      .catch((err) => {
 	        console.log("API 요청 실패:", err);
 	      });
-    }, [orderId]);
+    }, [orderId, cookies.accessToken]);
 
     const handleHistoryCancel = (orderId) => {
         setOrderId(orderId);
