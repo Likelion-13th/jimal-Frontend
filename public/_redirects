@@ -1,5 +1,5 @@
 /users/*    http://sajang-jimallikelion.ap-northeast-2.elasticbeanstalk.com/users/:splat  200
-/orders/*   http://sajang-jimallikelion.ap-northeast-2.elasticbeanstalk.com/orders/:splat  200
+/orders*   http://sajang-jimallikelion.ap-northeast-2.elasticbeanstalk.com/orders/:splat  200
 /token/*    http://sajang-jimallikelion.ap-northeast-2.elasticbeanstalk.com/token/:splat  200
 /api/*     http://sajang-jimallikelion.ap-northeast-2.elasticbeanstalk.com/api/:splat  200
 /categories/*     http://sajang-jimallikelion.ap-northeast-2.elasticbeanstalk.com/categories/:splat  200
