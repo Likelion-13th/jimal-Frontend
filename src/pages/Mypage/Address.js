@@ -30,7 +30,7 @@ const Address=({ handleSave })=>{
                     </div>
                     <div 
                         className="address-button"
-                        onClick={() => handleSave(zipcode, address, addressDetail)}
+                        onClick={handleSearchPostCode}
                     >
                         우편번호 찾기
                     </div>
