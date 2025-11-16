@@ -1,10 +1,13 @@
 import React from "react";
 
-const History=()=>{
-    const onCancel=()=>{
-        //API호출
-        alert("취소");
-    }
+const History=({historyData, onCancel})=>{
+    const formattedDate = (date) => date.split("T")[0];
+    const statusMap = {
+        PROCESSING: "배송중",
+        COMPLETE: "배송완료",
+        CANCEL: "주문취소",
+    };
+    if (!Array.isArray(historyData)) return null;
     
     return(
         <div className="history-container-wrap">
@@ -22,93 +25,22 @@ const History=()=>{
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>2025-01-01</td>
-                            <td>
-                                <div className="history-orderlist-container">
-                                    <div className="history-perfume-img">
-                                        <img
-                                            src={`${process.env.PUBLIC_URL}/image/perfume.jpg`}
-                                            alt="perfume ordered"
-                                            className="history-perfume"
-                                        ></img>
-                                    </div>
-                                    <div className="history-orderlist">
-                                        <div className="history-realName">셀린느 브아 도르망 향수</div>
-                                        <div className="history-littlename">셀린느</div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>1</td>
-                            <td>135,000원</td>
-                            <td>배송중</td>
-                            <td>
-                                <div className="history-cancel">
-                                    <div 
-                                        className="history-cancel-button"
-                                        onClick={onCancel}    
-                                    >취소</div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2025-01-01</td>
-                            <td>
-                                <div className="history-orderlist-container">
-                                    <div className="history-perfume-img">
-                                        <img
-                                            src={`${process.env.PUBLIC_URL}/image/perfume.jpg`}
-                                            alt="perfume ordered"
-                                            className="history-perfume"
-                                        ></img>
-                                    </div>
-                                    <div className="history-orderlist">
-                                        <div className="history-realName">셀린느 브아 도르망 향수</div>
-                                        <div className="history-littlename">셀린느</div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>1</td>
-                            <td>135,000원</td>
-                            <td>주문취소</td>
-                            <td>
-                                <div className="history-cancel">
-                                    <div 
-                                        className="history-cancel-button"
-                                        onClick={onCancel}    
-                                    >취소</div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2025-01-01</td>
-                            <td>
-                                <div className="history-orderlist-container">
-                                    <div className="history-perfume-img">
-                                        <img
-                                            src={`${process.env.PUBLIC_URL}/image/perfume.jpg`}
-                                            alt="perfume ordered"
-                                            className="history-perfume"
-                                        ></img>
-                                    </div>
-                                    <div className="history-orderlist">
-                                        <div className="history-realName">셀린느 브아 도르망 향수</div>
-                                        <div className="history-littlename">셀린느</div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>1</td>
-                            <td>135,000원</td>
-                            <td>배송완료</td>
-                            <td>
-                                <div className="history-cancel">
-                                    <div 
-                                        className="history-cancel-button"
-                                        onClick={onCancel}    
-                                    >취소</div>
-                                </div>
-                            </td>
-                        </tr>
+                        {historyData.map((item) => (
+                            <tr key={item.orderId}>
+                                <td>{formattedDate(item.createdAt)}</td>
+                                <td>
+                                    {item.item_name}
+                                </td>
+                                <td>{item.quantity}</td>
+                                <td>{item.totalPrice.toLocaleString()}원</td>
+                                <td>{statusMap[item.status]}</td>
+                                <td>
+                                    <button onClick={() => onCancel(item.orderId)}>
+                                        취소
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
                     </tbody>
                 </table>
             </div>

@@ -1,7 +1,7 @@
 import React from "react";
 import "../styles/ToolBar.css";
 import { useCookies } from "react-cookie";
-import  axios  from "axios";
+import  axios  from 'axios';
 
 const MoveToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -18,14 +18,14 @@ const handleLoginRedirect = () => {
       : "https://jimalshop.netlify.app";
 
   const oauthUrl = 
-    "http://Sajang-dev-env.eba-4qx9gwxi.ap-northeast-2.elasticbeanstalk.com/oauth2/start/kakao" +
+    "http://sajang-jimallikelion.ap-northeast-2.elasticbeanstalk.com/oauth2/start/kakao" +
     `?redirect_uri=${encodeURIComponent(redirectUrl)}`;
 
   window.location.href = oauthUrl;
 };
 
 const ToolBar = ({ isLogin, onLoginChange }) => {
-  const [cookies, , removeCookie] = useCookies(["accessToken"]);
+  const [cookies, removeCookie] = useCookies(["accessToken"]);
 
   const handleLogout = () => {
     axios

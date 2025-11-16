@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Banner from './Banner';
 import ProductCard from './ProductCard';
 import "../../styles/ProductPage.css";
 import PayModal from "../../components/PayModal";
+import axios from 'axios';
+import { useCookies } from 'react-cookie';
 
 const Perfume=()=>{
+    const [products, setProducts] = useState([]);
+    /*
     const products=[
         {
             id: 1,
@@ -128,6 +132,7 @@ const Perfume=()=>{
         },
         
     ];
+    */
 
     const [selectedProduct, setSelectedProduct]=useState(null);
     const [isModalOpen, setIsModalOpen]=useState(false);
@@ -139,10 +144,15 @@ const Perfume=()=>{
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     const currentProducts = products.slice(startIndex, endIndex);
+    const [cookies] = useCookies(["accessToken"]);
 
 
     const handleCardClick=(product)=>{
         setSelectedProduct(product);
+         if(typeof cookies.accessToken !== "string"){
+            alert("로그인이 필요합니다");
+            return;
+        }
         setIsModalOpen(true);
     };
 
@@ -151,6 +161,20 @@ const Perfume=()=>{
         setIsModalOpen(false);
     };
 
+    useEffect(() => {
+        axios
+            .get("/categories/2/items", {
+                headers: {
+                accept: "*/*",
+                },
+            })
+            .then((response) => {
+                setProducts(response.data.result);
+            }) 
+            .catch((err) => {
+                console.log("LOGOUT API 요청 실패", err);
+            });
+    }, []);
 
     return(
         <div>
