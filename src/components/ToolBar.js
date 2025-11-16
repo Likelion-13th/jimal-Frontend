@@ -18,7 +18,7 @@ const handleLoginRedirect = () => {
       : "https://jimalshop.netlify.app";
 
   const oauthUrl = 
-    "http://sajang-jimallikelion.ap-northeast-2.elasticbeanstalk.com/oauth2/start/kakao" +
+    "https://sajang-jimallikelion.ap-northeast-2.elasticbeanstalk.com/oauth2/start/kakao" +
     `?redirect_uri=${encodeURIComponent(redirectUrl)}`;
 
   window.location.href = oauthUrl;
