@@ -15,60 +15,59 @@ const Mypage=()=>{
     const [orderId, setOrderId] = useState(null);
 
     useEffect(() => {
-	    axios
-	      .get("/users/profile", {
-	        headers: {
-	          accept: "*/*",
-	          Authorization: `Bearer ${cookies.accessToken}`,
-	        },
-	      })
-	      .then((response) => {
+       axios
+         .get("/users/profile", {
+           headers: {
+             accept: "*/*",
+             Authorization: `Bearer ${cookies.accessToken}`,
+           },
+         })
+         .then((response) => {
                 setProfileData({
                 usernickname: response.data.result.usernickname,
                 recentTotal: response.data.result.recentTotal,
                 maxMileage: response.data.result.maxMileage,
             });
             setOrderStatusData(response.data.result.orderStatusCounts);
-	      })
-	      .catch((err) => {
-	        console.log("API 요청 실패:", err);
-	      });
+         })
+         .catch((err) => {
+           console.log("API 요청 실패:", err);
+         });
     }, [cookies.accessToken]);
 
     useEffect(() => {
-	    axios
-	      .get("/orders", {
-	        headers: {
-	          accept: "*/*",
-	          Authorization: `Bearer ${cookies.accessToken}`,
-	        },
-	      })
-	      .then((response) => {
+       axios
+         .get("http://sajang-jimallikelion.ap-northeast-2.elasticbeanstalk.com/orders", {  // ← 요기만 고침!
+           headers: {
+             accept: "*/*",
+             Authorization: `Bearer ${cookies.accessToken}`,
+           },
+         })
+         .then((response) => {
             setHistoryData(response.data.result);
-	      })
-	      .catch((err) => {
-	        console.log("API 요청 실패:", err);
-	      });
+         })
+         .catch((err) => {
+           console.log("API 요청 실패:", err);
+         });
     }, [cookies.accessToken]);
 
     useEffect(() => {
       if (!orderId) return;
-
-	    axios
-	      .put(`/orders/${orderId}/cancel`, {}, {
-	        headers: {
-	          accept: "*/*",
-	          Authorization: `Bearer ${cookies.accessToken}`,
-	        },
-	      })
-	      .then((response) => {
+       axios
+         .put(`http://sajang-jimallikelion.ap-northeast-2.elasticbeanstalk.com/orders/${orderId}/cancel`, {}, {  // ← 요기만 고침!
+           headers: {
+             accept: "*/*",
+             Authorization: `Bearer ${cookies.accessToken}`,
+           },
+         })
+         .then((response) => {
             console.log(response);
             setHistoryData(response.data.result);
             alert("주문이 취소되었습니다.");
-	      })
-	      .catch((err) => {
-	        console.log("API 요청 실패:", err);
-	      });
+         })
+         .catch((err) => {
+           console.log("API 요청 실패:", err);
+         });
     }, [orderId, cookies.accessToken]);
 
     const handleHistoryCancel = (orderId) => {
@@ -91,7 +90,6 @@ const Mypage=()=>{
                 },
             }
             );
-
             if (response.data.isSuccess) {
             alert("주소가 성공적으로 저장되었습니다.");
             } else {
@@ -103,7 +101,6 @@ const Mypage=()=>{
         }
     };
 
-
     return(
         <div className="page-container">
             <Profile profileData={profileData} />
@@ -111,7 +108,6 @@ const Mypage=()=>{
             <Address handleSave={handleSave}/>
             <History historyData={historyData} onCancel={handleHistoryCancel}/>
         </div>
-
     )
 }
 
