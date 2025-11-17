@@ -39,7 +39,8 @@ const Mypage=()=>{
        axios
          .get("/orders", {
            headers: {
-             accept: "*/*"
+             accept: "*/*",
+             Authorization: `Bearer ${cookies.accessToken}`,
            },
          })
          .then((response) => {
