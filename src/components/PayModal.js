@@ -3,35 +3,36 @@ import "../styles/PayModal.css";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 
+// 백엔드 API URL 직접 지정
+const API_URL = "http://sajang-jimallikelion.ap-northeast-2.elasticbeanstalk.com";
+
 const PayModal=({product, onClose})=>{
     const [cookies] = useCookies(["accessToken"]);
     const [quantity, setQuantity]=useState(1);
     const [mileageToUse, setMileageToUse]=useState("");
-    //const maxMileage=100000;
     const [maxMileage, setMaxMileage]=useState(0);
     const [, setProductPrice]=useState(product.price);
     const [totalPrice, setTotalPrice]=useState(product.price);
 
-	useEffect(() => {
-	    axios
-	      .get("/users/mileage", {
-	        headers: {
-	          accept: "*/*",
-	          Authorization: `Bearer ${cookies.accessToken}`,
-	        },
-	      })
-	      .then((response) => {
-	        setMaxMileage(response.data.result.maxMileage); // 여기 기억해두기!!!
-	      })
-	      .catch((err) => {
-	        console.log("API 요청 실패:", err);
-	      });
-	  }, [cookies.accessToken]);
+   useEffect(() => {
+       axios
+         .get(`${API_URL}/users/mileage`, {
+           headers: {
+             accept: "*/*",
+             Authorization: `Bearer ${cookies.accessToken}`,
+           },
+         })
+         .then((response) => {
+           setMaxMileage(response.data.result.maxMileage);
+         })
+         .catch((err) => {
+           console.log("API 요청 실패:", err);
+         });
+     }, [cookies.accessToken]);
 
     
     const handleQuantityChange=(type)=>{
         setQuantity((prev)=>(type==="plus"?prev+1:Math.max(1, prev-1)));
-
     };
 
     useEffect(()=>{
@@ -49,26 +50,23 @@ const PayModal=({product, onClose})=>{
     const handlePayment = async (e) => {
         e.preventDefault();
         try {
-        const response = await axios.post("/orders",
-            {
+            const response = await axios.post(`${API_URL}/orders`, {
                 itemId: product.id,
                 quantity: quantity,
                 mileageToUse: mileageToUse,
-            },
-            {
+            }, {
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${cookies.accessToken}`,
                 },
-            }
-        );
+            });
 
-        if (response.data.isSuccess) {
-            alert("주문이 성공적으로 생성되었습니다.");
-            onClose();
-        } else {
-            alert(`주문 실패: ${response.data.message}`);
-        }
+            if (response.data.isSuccess) {
+                alert("주문이 성공적으로 생성되었습니다.");
+                onClose();
+            } else {
+                alert(`주문 실패: ${response.data.message}`);
+            }
         } catch (error) {
             console.error("결제 오류:", error);
             alert("결제 처리 중 오류가 발생했습니다.");
@@ -150,7 +148,7 @@ const PayModal=({product, onClose})=>{
                             <div className="total-item">배송비</div>
                         </div>
                         <div>
-	                        {/* 상품 금액 */}
+                           {/* 상품 금액 */}
                             <div className="total-value">
                                 {totalPrice.toLocaleString()} 원
                             </div>

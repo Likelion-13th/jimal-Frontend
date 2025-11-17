@@ -55,7 +55,7 @@ const Mypage=()=>{
       if (!orderId) return;
 
 	    axios
-	      .put(`/orders/${orderId}/cancel`, null, {
+	      .put(`/orders/${orderId}/cancel`, {}, {
 	        headers: {
 	          accept: "*/*",
 	          Authorization: `Bearer ${cookies.accessToken}`,
