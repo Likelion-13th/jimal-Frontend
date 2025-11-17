@@ -49,7 +49,7 @@ const Address=({ handleSave })=>{
                     </div>
                     <div 
                         className="address-button"
-                        onClick={handleSave}
+                        onClick={() => handleSave(zipcode, address, addressDetail)}
                     >
                         저장하기
                     </div>
