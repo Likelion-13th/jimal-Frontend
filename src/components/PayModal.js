@@ -3,9 +3,6 @@ import "../styles/PayModal.css";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 
-// 백엔드 API URL 직접 지정
-const API_URL = "http://sajang-jimallikelion.ap-northeast-2.elasticbeanstalk.com";
-
 const PayModal=({product, onClose})=>{
     const [cookies] = useCookies(["accessToken"]);
     const [quantity, setQuantity]=useState(1);
@@ -16,7 +13,7 @@ const PayModal=({product, onClose})=>{
 
    useEffect(() => {
        axios
-         .get(`${API_URL}/users/mileage`, {
+         .get("/users/mileage", {
            headers: {
              accept: "*/*",
              Authorization: `Bearer ${cookies.accessToken}`,
@@ -50,23 +47,26 @@ const PayModal=({product, onClose})=>{
     const handlePayment = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post(`${API_URL}/orders`, {
+        const response = await axios.post("/orders",
+            {
                 itemId: product.id,
                 quantity: quantity,
                 mileageToUse: mileageToUse,
-            }, {
+            },
+            {
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${cookies.accessToken}`,
                 },
-            });
-
-            if (response.data.isSuccess) {
-                alert("주문이 성공적으로 생성되었습니다.");
-                onClose();
-            } else {
-                alert(`주문 실패: ${response.data.message}`);
             }
+        );
+
+        if (response.data.isSuccess) {
+            alert("주문이 성공적으로 생성되었습니다.");
+            onClose();
+        } else {
+            alert(`주문 실패: ${response.data.message}`);
+        }
         } catch (error) {
             console.error("결제 오류:", error);
             alert("결제 처리 중 오류가 발생했습니다.");

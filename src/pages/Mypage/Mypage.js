@@ -37,7 +37,7 @@ const Mypage=()=>{
 
     useEffect(() => {
        axios
-         .get("http://sajang-jimallikelion.ap-northeast-2.elasticbeanstalk.com/orders", {  // ← 요기만 고침!
+         .get("/orders", {
            headers: {
              accept: "*/*",
              Authorization: `Bearer ${cookies.accessToken}`,
@@ -54,7 +54,7 @@ const Mypage=()=>{
     useEffect(() => {
       if (!orderId) return;
        axios
-         .put(`http://sajang-jimallikelion.ap-northeast-2.elasticbeanstalk.com/orders/${orderId}/cancel`, {}, {  // ← 요기만 고침!
+         .put(`/orders/${orderId}/cancel`, {}, {
            headers: {
              accept: "*/*",
              Authorization: `Bearer ${cookies.accessToken}`,
