@@ -67,6 +67,7 @@ const Mypage=()=>{
          })
          .catch((err) => {
            console.log("API 요청 실패:", err);
+           alert("배달완료 상태에서는 주문을 취소할 수 없습니다.");
          });
     }, [orderId, cookies.accessToken]);
 
